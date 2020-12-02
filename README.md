@@ -18,7 +18,7 @@ JPA Repository for a Student Entity and expose it using a Student Resource.
 TECHNOLOGY/FRAMEWORKS
 ---------------------
 
-Front End Technology
+Front End Technology (Use google chrome to run the front end for testing)
 * ReacJS
 * Redux - is state management library, manage the application state, it will store the application state
 * Bootstrap for styling the HTML components
