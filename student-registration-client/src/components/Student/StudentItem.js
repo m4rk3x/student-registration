@@ -13,35 +13,47 @@ class StudentItem extends Component {
 
     render() {
         return (
-            <div>
-                <table className="table table-striped">
-                    <thead className="thead-dark">
-                        <tr>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th />
-                            <th />
-                        </tr>
-                    </thead>
-                    <tbody>
+            <div>              
+                <div className="content-table">
+                    <div className="content-row title-row">
+                        <div className="content-col">
+                            First Name
+                        </div>
+                        <div className="content-col">
+                            Last Name
+                        </div>
+                        <div className="content-col">
+                            Email  
+                        </div>
+                        <div className="content-col">
+                            
+                        </div>
+                        <div className="content-col">
+                            
+                        </div>
+                    </div>
                     {
                         this.props.studentList.map( student =>  
-                            <tr key={student.id}>
-                                <td>{student.firstName}</td>
-                                <td>{student.lastName}</td>
-                                <td>{student.email}</td>
-                                <td>
-                                    <Link to={`/updateStudent/${student.id}`} className="btn btn-outline-success" role="button" aria-pressed="true">Edit</Link>
-                                </td>
-                                <td>
+                            <div key={student.id} className="content-row">
+                                <div className="content-col">
+                                    {student.firstName}
+                                </div>
+                                <div className="content-col">
+                                    {student.lastName}
+                                </div>
+                                <div className="content-col">
+                                    {student.email}
+                                </div>
+                                <div className="content-col">
+                                    <Link to={`/addUpdateStudent/${student.id}`} className="btn btn-outline-success" role="button" aria-pressed="true">Edit</Link>
+                                </div>
+                                <div className="content-col">
                                     <li className="btn btn-outline-danger" onClick={this.onDeleteClick.bind(this, student.id)}>Delete</li>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         )
                     }
-                    </tbody>
-                </table>
+                </div>
             </div>
         )
     }

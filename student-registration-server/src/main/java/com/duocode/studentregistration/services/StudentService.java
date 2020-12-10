@@ -2,14 +2,19 @@ package com.duocode.studentregistration.services;
 
 import com.duocode.studentregistration.domain.Course;
 import com.duocode.studentregistration.domain.Student;
-import com.duocode.studentregistration.exceptions.CourseIdException;
-import com.duocode.studentregistration.exceptions.StudentIdException;
 import com.duocode.studentregistration.exceptions.EmailAccountAlreadyExistsException;
+import com.duocode.studentregistration.exceptions.StudentIdException;
 import com.duocode.studentregistration.repositories.StudentRepository;
+import com.duocode.studentregistration.validator.StudentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class StudentService {
@@ -20,17 +25,27 @@ public class StudentService {
     @Autowired
     private CourseService courseService;
 
+    @Autowired
+    private ValidationErrorService validationErrorService;
+
+    @Autowired
+    private StudentValidator studentValidator;
+
     public Student saveOrUpdateStudent(Student student) {
         try {
             Student newStudent;
             if (student.getId() == null) {
                 newStudent = studentRepository.save(new Student(student.getFirstName(), student.getLastName(), student.getEmail()));
+                newStudent.getCourses().addAll(student.getCourses());
             } else {
                 newStudent = studentRepository.getById(student.getId());
-                newStudent.getCourses().clear();;
+                newStudent.setFirstName(student.getFirstName());
+                newStudent.setLastName(student.getLastName());
+                newStudent.setEmail(student.getEmail());
             }
-            newStudent.getCourses().addAll(student.getCourses());
+
             return studentRepository.save(newStudent);
+
         } catch (Exception ex) {
             throw new EmailAccountAlreadyExistsException("Email account '"+student.getEmail()+"' already exists");
         }
@@ -49,13 +64,6 @@ public class StudentService {
         return student;
     }
 
-    public Student updateStudent(Long studentId, Student updatedStudent) {
-        Student student = findStudentById(studentId);
-        student = updatedStudent;
-        return studentRepository.save(student);
-
-    }
-
     public void deleteStudentById(Long studentId) {
         studentRepository.deleteById(studentId);
     }
@@ -72,21 +80,27 @@ public class StudentService {
 
     }
 
-    public Set<Student> getStudentsByCourseTitle(String courseName) {
-        Course course = courseService.getCourseByCourseName(courseName);
-        if (course != null) {
+    public Set<Student> getStudentsByCourseId(Long studentId, Long courseId) {
+        Student student = findStudentById(studentId);
+        Course course = courseService.findCourseByIdentifier(courseId);
+        if (course != null && student != null) {
             Comparator<Student> studentByName = (Student student1, Student student2) -> student1.getFirstName()
                     .compareTo(student2.getFirstName());
             TreeSet<Student> sortedStudents = new TreeSet<>(studentByName);
 
             Set<Student> students = course.getStudents();
-            students.forEach(student -> student.setCourses(null));
+            students.forEach(item -> item.setCourses(null));
             sortedStudents.addAll(students);
             return sortedStudents;
         }
 
         return new HashSet<>();
 
+    }
+
+    public ResponseEntity<?> studentValidation(Student student, BindingResult result) {
+        studentValidator.validate(student, result);
+        return validationErrorService.validationErrorService(result);
     }
 
 }

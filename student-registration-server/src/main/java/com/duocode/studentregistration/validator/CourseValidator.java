@@ -1,7 +1,6 @@
 package com.duocode.studentregistration.validator;
 
 import com.duocode.studentregistration.domain.Course;
-import com.duocode.studentregistration.domain.Student;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

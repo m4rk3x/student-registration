@@ -23,11 +23,10 @@ class StudentList extends Component {
                     <div className="col-md-12">
                         <h1 className="display-4 text-center">Student Details</h1>
                         <br />
-                        <div className='control' style={{minWidth: "100px"}}>
+                        <div className='control'>
                             <input onChange={e=> {
                                 this.props.getStudentsByFirstName(e.target.value);
-                                console.log(e.target.value);
-                            }} style={{width: "20%"}} placeholder='Filter by First Name' type='text'/>
+                            }} placeholder='Filter by First Name' type='text'/>
                         </div>
                         <CreateStudentButton />
                         <br />

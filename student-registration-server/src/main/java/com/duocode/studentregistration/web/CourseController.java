@@ -2,8 +2,6 @@ package com.duocode.studentregistration.web;
 
 import com.duocode.studentregistration.domain.Course;
 import com.duocode.studentregistration.services.CourseService;
-import com.duocode.studentregistration.services.ValidationErrorService;
-import com.duocode.studentregistration.validator.CourseValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,12 +25,6 @@ public class CourseController {
     @Autowired
     private CourseService courseService;
 
-    @Autowired
-    private ValidationErrorService validationErrorService;
-
-    @Autowired
-    private CourseValidator courseValidator;
-
     @Operation(summary = "Create a new Course", description = "Add a course", tags = { "course" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "successful created",
@@ -41,9 +33,7 @@ public class CourseController {
     @PostMapping
     public ResponseEntity<?> createNewCourse(@Valid @RequestBody Course course, BindingResult result) {
 
-        courseValidator.validate(course, result);
-
-        ResponseEntity<?> errorMap = validationErrorService.validationErrorService(result);
+        ResponseEntity<?> errorMap = courseService.courseValidation(course, result);
         if (errorMap != null) return errorMap;
 
         Course newCourse = courseService.saveOrUpdateCourse(course);

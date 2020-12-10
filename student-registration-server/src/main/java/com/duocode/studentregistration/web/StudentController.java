@@ -2,10 +2,7 @@ package com.duocode.studentregistration.web;
 
 import com.duocode.studentregistration.domain.Course;
 import com.duocode.studentregistration.domain.Student;
-import com.duocode.studentregistration.services.CourseService;
-import com.duocode.studentregistration.services.ValidationErrorService;
 import com.duocode.studentregistration.services.StudentService;
-import com.duocode.studentregistration.validator.StudentValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +13,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,27 +28,18 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private CourseService courseService;
-
-    @Autowired
-    private ValidationErrorService validationErrorService;
-
-    @Autowired
-    private StudentValidator studentValidator;
-
-    @Operation(summary = "Add a new Student to the database", description = "Add a student", tags = { "student" })
+    @Operation(summary = "Add/Update a Student to the database", description = "Add/Update a student", tags = { "student" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "successful created",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = Student.class)))) })
     @PostMapping
     public ResponseEntity<?> createNewStudent(@Valid @RequestBody Student student, BindingResult result) {
 
-        ResponseEntity<?> errorMap = validationErrorService.validationErrorService(result);
+        ResponseEntity<?> errorMap = studentService.studentValidation(student, result);
         if (errorMap!=null) return errorMap;
 
         Student student1 = studentService.saveOrUpdateStudent(student);
-        return new ResponseEntity<Student>(student, HttpStatus.CREATED);
+        return new ResponseEntity<Student>(student, student.getId()!=null?HttpStatus.OK:HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get all students from the database", description = "find all students", tags = { "student" })
@@ -73,19 +60,6 @@ public class StudentController {
     public ResponseEntity<Student> getStudentById(@PathVariable Long studentId) {
         Student student = studentService.findStudentById(studentId);
         return new ResponseEntity<Student>(student, HttpStatus.OK);
-    }
-
-    @Operation(summary = "Update an existing student", description = "", tags = { "student" })
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation")
-    })
-    @PutMapping("/{studentId}")
-    public ResponseEntity<?> updateStudent(@Valid @PathVariable Long studentId, @RequestBody Student student, BindingResult result) {
-        ResponseEntity<?> errorMap = validationErrorService.validationErrorService(result);
-        if (errorMap != null) return errorMap;
-        Student updatedUser = studentService.updateStudent(studentId, student);
-
-        return new ResponseEntity<Student>(updatedUser, HttpStatus.OK);
     }
 
     @Operation(summary = "Deletes an student", description = "", tags = { "student" })
@@ -114,9 +88,9 @@ public class StudentController {
             @ApiResponse(responseCode = "200", description = "successful operation",
                     content = @Content(schema = @Schema(implementation = Student.class)))
             })
-    @GetMapping("/course/{courseTitle}")
-    public Iterable<Student> getStudentsEnrolledCourse(@PathVariable String courseTitle) {
-        return studentService.getStudentsByCourseTitle(courseTitle);
+    @GetMapping(value="/{studentId}/courses")
+    public Iterable<Student> studentsAddCourse(@PathVariable Long studentId, @RequestParam Long courseId) {
+            return studentService.getStudentsByCourseId(studentId, courseId);
     }
 
 

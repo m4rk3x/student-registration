@@ -1,11 +1,9 @@
 package com.duocode.studentregistration.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 

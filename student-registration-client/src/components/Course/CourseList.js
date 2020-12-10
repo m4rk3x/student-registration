@@ -23,11 +23,10 @@ class CourseList extends Component {
                     <div className="col-md-12">
                         <h1 className="display-4 text-center">Course Details</h1>
                         <br />
-                        <div className='control' style={{minWidth: "300px"}}>
+                        <div className='control'>
                             <input onChange={e=> {
                                 this.props.getCoursesByTitle(e.target.value);
-                                console.log(e.target.value)
-                            }} style={{width: "50%"}} placeholder='Filter by' type='text'/>
+                            }} placeholder='Filter by title' type='text'/>
                         </div>
                         <CreateCourseButton />
                         <br />

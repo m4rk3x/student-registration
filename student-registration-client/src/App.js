@@ -5,13 +5,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store"
-import AddStudent from './components/Student/AddStudent';
+import AddUpdateStudent from './components/Student/AddUpdateStudent';
 import StudentList from './components/Student/StudentList';
-import UpdateStudent from './components/Student/UpdateStudent';
 import SideBar from "./components/Layout/sidebar";
-import AddCourse from './components/Course/AddCourse';
+import AddUpdateCourse from './components/Course/AddUpdateCourse';
 import CourseList from './components/Course/CourseList';
-import UpdateCourse from './components/Course/UpdateCourse';
 
 function App() {
   return (
@@ -22,13 +20,13 @@ function App() {
           <SideBar />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/studentList" component={StudentList} />
-          <Route exact path="/addStudent" component={AddStudent} />
-          <Route exact path="/updateStudent/:id" component={UpdateStudent} />
-          <Route exact path="/deleteStudent/:id" component={UpdateStudent} />
+          <Route exact path="/addUpdateStudent" component={AddUpdateStudent} />
+          <Route exact path="/addUpdateStudent/:id" component={AddUpdateStudent} />
+          <Route exact path="/deleteStudent/:id" component={AddUpdateStudent} />
           <Route exact path="/courseList" component={CourseList} />
-          <Route exact path="/addCourse" component={AddCourse} />
-          <Route exact path="/updateCourse/:id" component={UpdateCourse} />
-          <Route exact path="/deleteCourse/:id" component={UpdateCourse} />
+          <Route exact path="/addUpdateCourse" component={AddUpdateCourse} />
+          <Route exact path="/addUpdateCourse/:id" component={AddUpdateCourse} />
+          <Route exact path="/deleteCourse/:id" component={AddUpdateCourse} />
         </div>
       </Router>
     </Provider>

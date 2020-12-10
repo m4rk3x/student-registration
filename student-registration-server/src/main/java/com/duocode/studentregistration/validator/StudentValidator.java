@@ -1,8 +1,6 @@
 package com.duocode.studentregistration.validator;
 
 import com.duocode.studentregistration.domain.Student;
-import com.duocode.studentregistration.repositories.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

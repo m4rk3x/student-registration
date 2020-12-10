@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const CreateCourseButton = () =>  {
     return (
         <React.Fragment>
-            <Link to="/addCourse" className="btn btn-secondary">Create a Course</Link>
+            <Link to="/addUpdateCourse" className="btn btn-secondary">Create a Course</Link>
         </React.Fragment>
     );
 };

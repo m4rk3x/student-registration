@@ -1,7 +1,6 @@
 package com.duocode.studentregistration.repositories;
 
 import com.duocode.studentregistration.domain.Course;
-import com.duocode.studentregistration.domain.Student;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

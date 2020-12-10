@@ -9,9 +9,14 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-//Mechanism that helps you break a way having exception habndling, gives you exception handling for controllers
-@RestController
+ @RestController
 public class CustomResponseEntityException extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleCourseIdException(CourseIdException ex, WebRequest request) {
+        CourseIdExceptionResponse exceptionResponse = new CourseIdExceptionResponse(ex.getMessage());
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleEmailAccountAlreadyExists(EmailAccountAlreadyExistsException ex, WebRequest request) {

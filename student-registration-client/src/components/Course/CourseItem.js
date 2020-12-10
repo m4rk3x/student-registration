@@ -12,35 +12,47 @@ class CourseItem extends Component {
 
     render() {
         return (
-            <div>
-                <table className="table table-striped">
-                    <thead className="thead-dark">
-                        <tr>
-                            <th>Course Code</th>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th />
-                            <th />
-                        </tr>
-                    </thead>
-                    <tbody>
+            <div>              
+                <div className="content-table">
+                    <div className="content-row title-row">
+                        <div className="content-col">
+                            Course Code
+                        </div>
+                        <div className="content-col">
+                            Course Title
+                        </div>
+                        <div className="content-col">
+                            Course Description
+                        </div>
+                        <div className="content-col">
+                            
+                        </div>
+                        <div className="content-col">
+                            
+                        </div>
+                    </div>
                     {
                         this.props.courseList.map( course =>  
-                            <tr key={course.id}>
-                                <td>{course.courseCode}</td>
-                                <td>{course.title}</td>
-                                <td>{course.description}</td>
-                                <td>
-                                    <Link to={`/updateCourse/${course.id}`} className="btn btn-outline-success" role="button" aria-pressed="true">Edit</Link>
-                                </td>
-                                <td>
+                            <div key={course.id} className="content-row">
+                                <div className="content-col">
+                                    {course.courseCode}
+                                </div>
+                                <div className="content-col">
+                                    {course.title}
+                                </div>
+                                <div className="content-col">
+                                    {course.description}
+                                </div>
+                                <div className="content-col">
+                                    <Link to={`/addUpdateCourse/${course.id}`} className="btn btn-outline-success" role="button" aria-pressed="true">Edit</Link>
+                                </div>
+                                <div className="content-col">
                                     <li className="btn btn-outline-danger" onClick={this.onDeleteClick.bind(this, course.id)}>Delete</li>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                         )
                     }
-                    </tbody>
-                </table>
+                </div>
             </div>
         )
     }
